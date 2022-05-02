@@ -53,6 +53,52 @@ char popDll(dll* myList){
 		  char popChar = popNode->character;
 
 		  rmNode(myList, popNode);
+
+		  return popChar;
+}
+
+//pops a character at a specific position in the dll. 1 indexed
+char popDllByDex(dll* myList, int dex){// the index type will change if made big ints
+		  dllNode* travel = myList->head;
+		  int counter = 0;
+		  while(counter != dex){
+					 travel = travel->next;
+					 counter++;
+		  }
+
+		  char popChar = travel->character;
+		  rmNode(myList, travel);
+
+		  return popChar;
+}
+
+//creats a new dll which is a concatination of dll1 and dll2. DELETES THE INPUT DLLS TODO make a version which doesn't delete inputs but makes a copy
+dll* concatDll(dll* myList1, dll* myList2){
+		  dll* combList = (dll*)malloc(sizeof(dll));
+		  dllNode* combHead = myList1->head;
+		  dllNode* combTail = myList2->tail;
+		  dllNode* deadHead = myList2->head;
+		  dllNode* deadTail = myList1->tail;
+		  dllNode* stitchFront = deadTail->prev;
+		  dllNode* stitchBack = deadHead->next;
+
+		  //stich the nodes together
+		  stitchFront->next = stitchBack;
+		  stitchBack->prev = stitchFront;
+
+		  //free the unsued head/tail nodes and the lists
+		  free(deadHead);
+		  free(deadTail);
+		  free(myList1);
+		  free(myList2);
+
+		  //ref the new head in combList
+		  combList->head = combHead;
+		  combList->tail =combTail;
+
+		  return combList;
+
+
 }
 
 //count nodes of a dll, excluding tail/head
@@ -61,8 +107,9 @@ int countDll(dll* myList){
 		  dllNode* tail = myList->tail;
 		  int counter = 0;
 
-		  while((travel + counter) != tail){
+		  while(travel != tail){
 					counter++; 
+					travel = travel->next;
 		  }
 
 		  return counter-1;
@@ -138,15 +185,32 @@ void printDll(dll* myList){
 
 int main(){
 		  
-		  char myString[] = "This is my string...";
+		  char myString[] = "Hello world! This is NOT a string. This was a string, an array of characters, coded into main(), but not any more.\nThis is now a doubly linked list! Printed to stdout by a custom function!";
 		  char * pMyString = &myString[0];
 		  
+		  char myString2[] = "\n\nThat's great and all... but can I manipulate these things?\n\n";
+		  char * pMyString2 = &myString2[0];
+
 		  dll* myList = newDll(); 
+		  dll* myList2 = newDll();
 
-		 // dllAppend(myList, 'a');
+
 		  appendBuff(myList, pMyString);
+		  appendBuff(myList2, pMyString2);
+		  printDll(myList2);
 		  printDll(myList);
+		  printf("\n");
 
-		  //delDll(myList);
+		  int elems = countDll(myList);
+
+		  printf("This dll has %d characters.\n", elems);
+
+		  dll* finalList = concatDll(myList, myList2);
+
+		  printDll(finalList);
+		  elems = countDll(finalList);
+		  printf("This dll has %d characters.\n", elems);
+
+		  delDll(finalList);
 		  return 0;
 }
