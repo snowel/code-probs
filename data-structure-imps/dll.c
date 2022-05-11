@@ -98,12 +98,38 @@ dllNode* indexToPointer(dll* list, int n){
 		  return travel;//Out of bounds or empt list both return NULL pointer
 }
 
+//push to index
+void insertDll(dll* list, char elem, int index){
+		  //get pointer to current node at given index
+		  dllNode* target = indexToPointer(list, index);
+
+		  //create new node
+		  dllNode* newNode = (dllNode*)malloc(sizeof(dllNode));
+		  newNode->character = elem;
+		  newNode->next = target;
+
+		  //TODO I hate how I have to check edge cases every time, seem like lost overhead... I think including a length to the struct would be good.
+		  if(target == NULL && index == 0){//there are no elements in the list and the index is 0 TODO I could also default it to out of bounds...
+					 newNode->prev = NULL;
+					 list->head = newNode;
+					 list->tail = newNode;
+		  }else if(target->prev == NULL){//frist elementthe index is zero... I could also cheaac in index == 0;
+					 newNode->prev = target->prev;
+					 list->head = newNode;
+					 target->prev = newNode;
+		  } else{//any other position 
+					 newNode->prev = target->prev; 
+					 target->prev = newNode;
+
+		  }
+}
+
 //pop node by index
 char rmNode(dll* list, int index){
 		  dllNode* poppedNode = indexToPointer(list, index);
 
 		  //set the next node & tail
-		  if(poppedNode == NULL){ //the list is either empty or the inex is out of bounds
+		  if(poppedNode == NULL){ //the list is either empty or the index is out of bounds
 					 return '\0';//in this case there is no memory to free
 		  } else if(poppedNode == list->head && poppedNode == list->tail) {//The list has one single element TODO why does this (poppedNode == list->head == list->tail) give me an error of comparing pointer to int?
 					 char poppedChar = poppedNode->character; //TODO case to avoid repeating this? but then there's an if in a case which is not great either...
