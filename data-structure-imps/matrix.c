@@ -73,15 +73,18 @@ lm* newLM(int m, int n){
 					 appended->m = j;
 					 appended->n = 0;
 		  }
-
-		 //creates all the nodes and links them
-		 for(i = 0; i < m; i++){
-					 for(j = 0; j < n; j++){
-								lm_node* newNode = (lm_node*)malloc(sizeof(lm_node));
-								newNode->m = i;
-								newNode->n = j;
+		  
+		  //fill out each row
+		  for(i = 0; i < m; i++){
+					 j = 0;
+					 while(j < n){
+								appendHorz(i, new);
+								j++;
 					 }
-		 }
+		  }
+		
+
+		  return new;
 }
 
 
