@@ -1,3 +1,6 @@
+#include "bitree.h"
+#include "matrix.h"
+
 struct treeNode {
 		  struct treeNode* right;//right child
 		  struct treeNode* left;//left child
@@ -41,4 +44,15 @@ int rmTree(treeNode* root){
 		  
 		 return 0; 
 
+}
+
+int countLeaves(treeNode* tree){
+		  if(tree == NULL){
+					 return 0;
+		  }
+		  if(tree->left == NULL && tree->right == NULL){
+					 return 1;
+		  } else {
+					 return countLeaves(tree->left) + countLeaves(tree->right);
+		  }
 }

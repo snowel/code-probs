@@ -1,20 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-typedef struct dllNode {
-		  char character;
-		  struct dllNode* next;
-		  struct dllNode* prev;
-}dllNode;
-
-typedef struct {
-		  dllNode* head;
-		  dllNode* tail;
-}dll;
-
-
-
 //new list
 dll* newDll(){
 		  dll* newList = (dll*)malloc(sizeof(dll));
@@ -172,9 +158,5 @@ int rmList(dll* list){
 		  }
 
 		  free(list);
-		  return 0;
-}
-int main(){
-
 		  return 0;
 }

@@ -1,10 +1,6 @@
-dll.c:clean
-	gcc -o doubly-linked-test dll.c
-	./doubly-linked-test
-	rm -f doubly-linked-test
-hashmap.c:clean
-	gcc -o hashmap hashmap.c
-	./hashmap
-	rm -f hashmap
+test.c:clean
+	gcc -o maintest test.c
+	./maintest
+	rm -f maintest
 clean:
-	rm -f doubly-linked-test hashmap
+	rm -f maintest 
