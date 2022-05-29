@@ -14,7 +14,8 @@ void printArr(int* arr, int arrLength){
 		  int i = 0;
 
 		  while(i != arrLength){
-					 printf("%d", arr[0]);
+					 printf("%d", arr[i]);
+					 if(i != (arrLength - 1)) printf("_"); 
 					 i++;
 		  }
 }
@@ -33,7 +34,7 @@ void printTriangle(int** pasc, int rows){
 
 		  for(triLayer = 0; triLayer < rows; triLayer++){
 					printf("---");
-					 /*
+					 /* TODO this loop is infinite????
 					 for(i = 0; i < (whiteSpace - triLayer); i++){
 								printf(" ");
 					 }
@@ -56,7 +57,7 @@ int* pascalRowGen(int ithRow, int* prevRow){
 		  //alloc a piece of memory of the rigth size
 		  int* row = malloc(ithRow * sizeof(int));
 		  
-		  //first row is just a 1
+		  //first row is just a {1}
 		  if(ithRow == 1){
 					 row[0] = 1;
 					 return row;
@@ -74,27 +75,23 @@ int* pascalRowGen(int ithRow, int* prevRow){
 		  row[0] = 1;
 
 		  //variable for the sum that will define each element
-		  int upRight, upLeft;
+		  int upRight, upLeft, i;
 		  //for each element of the row, define it as a function of element sof the previous row
-		  for(int i = 1; i < (ithRow - 1); i++){
+		  for(i = 1; i < (ithRow - 1); i++){
 					 upLeft = prevRow[i-1];
 					 upRight = prevRow[i]; 
-					 row[i] = upRight + upLeft;
+					 row[i] = (upRight + upLeft);
 		  }
 		  
 		  //set the last element to 1
 		  row[ithRow - 1] = 1;
 
 		  return row;
-
-
-		  
 }
 
 int** pascal(int rows){
 		  int** outerArr = (int**)malloc(rows * sizeof(int*));
 		  mallocFail(outerArr);
-
 
 		  int prevRowIndex, rowNumber, *thisRow;
 		  for(int i = 0; i < rows; i++){//this i refers to the index of the given row
@@ -116,7 +113,9 @@ int** pascal(int rows){
 
 //rm and free an array
 void rmPascArr(int ** arr, int rows){//rows = length
-		  for(int i =0; i < rows; i++){
+		  for(int i = 0; i < rows; i++){
 					 free(arr[0]);
 		  }
+
+		  free(arr);
 }

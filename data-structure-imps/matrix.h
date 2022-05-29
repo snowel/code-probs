@@ -27,6 +27,16 @@ typedef struct lm {//a batrix of linked nodes, contianing the origin a_00 and th
 		  lm_node* node00;
 }lm;
 
+typedef struct triNode {
+		  triNode* top;
+		  triNode* left;
+		  triNode* right;
+
+}triNode;
+
+typedef struct {
+		  triNode* core;
+}triGraph;
 
 lm* newLM(int m, int n);
 

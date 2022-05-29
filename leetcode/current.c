@@ -11,9 +11,9 @@
 
 int main(){
 		  
-		  int rows = 5;
+		  int rows = 12;
 		  int** pasc = pascal(rows);
 		  printTriangle(pasc, rows);
-		  rmPascArr(pasc, rows);
+		  //rmPascArr(pasc, rows);
 		  return 0;
 }

@@ -17,7 +17,7 @@ int main(){
 
 		 lm* matr = newLM(7,3);
 		 treeNode* treeM = newTreeFromMatrix(matr->node00);
-		 //rmMatrix(matr);
+		 rmMatrix(matr);
 
 		 int ans = countLeaves(treeM);
 

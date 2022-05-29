@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "dll.h"
+
 //new list
 dll* newDll(){
 		  dll* newList = (dll*)malloc(sizeof(dll));
