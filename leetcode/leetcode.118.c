@@ -20,7 +20,7 @@ void printArr(int* arr, int arrLength){
 		  }
 }
 
-//prints a triangle of int arrays, assuming each array is one elemnt longer than the previous and there are "rows" number of elements
+//prints a triangle of int arrays, assuming each array is one element longer than the previous and there are "rows" number of elements
 void printTriangle(int** pasc, int rows){
 		  int whiteSpace, triLayer;
 		  unsigned int i, j;

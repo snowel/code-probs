@@ -86,6 +86,23 @@ dllNode* indexToPointer(dll* list, int n){
 		  return travel;//Out of bounds or empt list both return NULL pointer
 }
 
+
+//Get the index of a certain node
+int pointerToIndex(dllNode* start){
+		  dllNode* travel = start;
+
+		  int counter = 0;
+
+		  while(travel->prev != NULL){
+					 counter++;
+					 travel = travel->prev;
+		  }
+
+		  return counter;
+		  
+}
+
+
 //push to index
 void insertDll(dll* list, char elem, int index){
 		  //get pointer to current node at given index
@@ -162,3 +179,77 @@ int rmList(dll* list){
 		  free(list);
 		  return 0;
 }
+
+//Append character buffer to the end of the list
+int appendBuffDll(dll* list, char* string){
+		  int travel = 0;
+		  char travelChar;
+		  while(string[travel] != '\0'){
+					 travelChar = string[travel];
+					 appendDll(list, travelChar);
+					 travel++;
+		  }
+
+		  return 0;
+}
+
+
+int matchBuff(dllNode* start, char* buff){
+		  dllNode* travel = start;
+		  int buffIndex = 0;
+		  //Defaults to true, if at any point a character deos not match or the list or the string ends before the other, it retruns false
+
+		  while(buff[buffIndex] != '\0'){
+					 if(travel == NULL) return 0;//if the string exceeds the length of the list(from the starting position)
+					 if(buff[buffIndex] != travel->character) return 0;//if one of the characters don't match
+
+					 //increment and update travel
+					 buffIndex++;
+					 travel = travel->next;
+		  }
+
+		  return 1;
+}
+
+int charSearch(dllNode* start, char searchChar){
+		  dllNode* travel = start;
+		  
+		  while(travel->character != searchChar){
+					 if(travel->next == NULL) return -1;
+					 travel = travel->next;
+		  }
+		  //If the function executes to here, the character was found and travel points to that node
+		  int index = pointerToIndex(travel);
+		  return index;
+}
+
+dllNode* charSearchPtr(dllNode* start, char searchChar){
+		  dllNode* travel = start;
+		  
+		  while(travel->character != searchChar){
+					 if(travel->next == NULL) return NULL;
+					 travel = travel->next;
+		  }
+		  //If the function executes to here, the character was found and travel points to that node
+		  return travel;
+}
+int subStrSearch(dllNode* start, char* string){
+		  //pointer to the first occurence of the frist character(if found, otherwise -1)
+		  dllNode* travel = charSearchPtr(travel, string[0]);
+
+		  //if the first character of the searched string is not found, the string is not found
+		  if(travel == NULL) return -1;
+
+		  //if the pattern matches we return the index of travel
+		  if(matchBuff(travel, string) == 1){
+					 int index = pointerToIndex(travel);
+					 return index;
+		  }
+
+		  //if the pattern doesn't match but we've reached the end of the list, we know the pater won't match
+		  travel = travel->next;
+		  if(travel == NULL) return -1;
+		 
+		  //otherwise, we recusively repeat from when travel is now (the travel->next above makes sure we don't get stuck evaluating the same pattern infinitely)
+		  return subStrSearch(travel, string);
+}	
