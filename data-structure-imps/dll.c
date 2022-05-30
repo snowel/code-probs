@@ -233,9 +233,10 @@ dllNode* charSearchPtr(dllNode* start, char searchChar){
 		  //If the function executes to here, the character was found and travel points to that node
 		  return travel;
 }
+
 int subStrSearch(dllNode* start, char* string){
 		  //pointer to the first occurence of the frist character(if found, otherwise -1)
-		  dllNode* travel = charSearchPtr(travel, string[0]);
+		  dllNode* travel = charSearchPtr(start, string[0]);
 
 		  //if the first character of the searched string is not found, the string is not found
 		  if(travel == NULL) return -1;
@@ -253,3 +254,116 @@ int subStrSearch(dllNode* start, char* string){
 		  //otherwise, we recusively repeat from when travel is now (the travel->next above makes sure we don't get stuck evaluating the same pattern infinitely)
 		  return subStrSearch(travel, string);
 }	
+
+//Helper to recurse while specifying only the dll rather than the node, to avoid starting from the middle
+int countSubStrOccFromHead(dllNode* listHead, char* string){
+		  //pointer to the first occurence of the firxt character of the string
+		  dllNode* travel = charSearchPtr(listHead, string[0]);
+		  
+		  //if the first character is not found past that point, return 0
+		  if(travel == NULL) return 0;
+
+		  //if the pattern matches, we return 1 + the continued search from that point
+		  if(matchBuff(travel, string) == 1) return 1 + countSubStrOccFromHead(travel->next, string);
+}
+
+//TODO is there a more elegant way to preserve the recursion than splitting it into two functions?
+int countSubStrOcc(dll* list, char* string){
+		  return countSubStrOccFromHead(list->head, string);
+}
+
+int* searchAllSubStr(dll* list, char* string){
+		  int length = countSubStrOcc(list, string) + 1;
+		  //TODO would it be much smarter to have an arbitrary array size and then a counter, progressively reallocing as needed, rather than going through the whole list twice? 
+
+		  //create an array of the appropriate size
+		  int* arr = malloc(sizeof(int) * length);
+		  //set the first element
+		  arr[0] = length;
+
+		  //create a travel and counter
+		  dllNode* travel;
+		  int i, index;
+
+		  for(i = 1; i < length; i++){
+					 index = subStrSearch(travel, string);
+					 arr[i] = index;
+					 travel = travel->next;
+		  }
+
+		  return arr;
+}
+
+void insertBuff(dll* list, int index, char* string){
+		  int i = 0;//loop counter
+
+		  while(string[i] != '\0'){
+					 insertDll(list, index + i, string[i]);
+					 i++;
+		  }
+}
+
+
+char popDex(dll* list, int index){
+		  dllNode* popped = indexToPointer(list, index);
+		  if(popped == NULL) return '\0';//out of bounds retruns a null termination character
+		  
+		  //save pointers to the next and previous node
+		  dllNode* popNext = popped->next;
+		  dllNode* popPrev = popped->prev;
+
+		  //update the next and prev nodes
+		  popNext->prev = popPrev;
+		  popPrev->next = popNext;
+
+		  //grab the character and remove the popped node
+		  char elem = popped->character;
+		  free(popped);
+
+		  return elem;
+}
+
+int rmNodes(dll* list, int index, int nnodes){
+       dllNode* safety = indexToPointer(list, index);
+       int i;
+		 for(i = 0; i < nnodes; i++){
+					if(safety == NULL) return i;
+					 rmNode(list, index);
+		 } 
+
+		 return i;
+}
+
+int countString(char* string){
+		  int counter = 0;
+		  char travel = string[0];
+
+		  while(travel != '\0'){
+					 counter++;
+					 travel = string[counter];
+		  }
+
+		  return counter;
+}
+
+dll* concatDll(dll* frontList, dll* backList){
+		  dll* new = malloc(sizeof(dll));
+		  
+		  //set the head and tail of the new list
+		  new->head = frontList->head;
+		  new->tail = backList->tail;
+
+		  //set the end of the front to point to the beigng of the back and vice-versa
+		  frontStitch = frontList->tail;
+		  backStitch = backList->head;
+
+		  frontStitch->next = backStitch;
+		  backStitch->prev = frontstich;
+
+		  //free the two previous list structs
+		  free(frontList);
+		  free(backList);
+
+		  return new;
+
+}
