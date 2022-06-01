@@ -8,12 +8,15 @@
 #include "leetcode.190.c"
 #include "leetcode.202.c"
 #include "leetcode.118.c"
+#include "leetcode.55.c"
 
 int main(){
 		  
-		  int rows = 12;
-		  int** pasc = pascal(rows);
-		  printTriangle(pasc, rows);
-		  //rmPascArr(pasc, rows);
+		  int len = 10;
+		  int arr[] = {1, 4, 1, 1, 1, 3, 2, 3, 1, 1};
+		  int jumps = isJumpable(&arr[0], len);
+		  printf("This array is %d\n", jumps);
+		  jumps = isJumpableSimple(&arr[0], len);
+		  printf("This array is %d\n", jumps);
 		  return 0;
 }
