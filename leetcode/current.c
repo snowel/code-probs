@@ -9,14 +9,11 @@
 #include "leetcode.202.c"
 #include "leetcode.118.c"
 #include "leetcode.55.c"
+#include "leetcode.338.c"
 
 int main(){
 		  
 		  int len = 10;
-		  int arr[] = {1, 4, 1, 1, 1, 3, 2, 3, 1, 1};
-		  int jumps = isJumpable(&arr[0], len);
-		  printf("This array is %d\n", jumps);
-		  jumps = isJumpableSimple(&arr[0], len);
-		  printf("This array is %d\n", jumps);
+		  onesPrint(len);
 		  return 0;
 }
